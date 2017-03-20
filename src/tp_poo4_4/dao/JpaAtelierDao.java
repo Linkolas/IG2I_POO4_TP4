@@ -16,7 +16,7 @@ public class JpaAtelierDao extends JpaDao<Atelier> implements AtelierDao {
 
     private static JpaAtelierDao instance = null;
     
-    public static JpaAtelierDao getInstance() {
+    protected static JpaAtelierDao getInstance() {
         if (instance == null) {
             instance = new JpaAtelierDao();
         }

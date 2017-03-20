@@ -17,7 +17,7 @@ public class JpaTacheDao extends JpaDao<Tache> implements TacheDao {
 
     private static JpaTacheDao instance = null;
     
-    public static JpaTacheDao getInstance() {
+    protected static JpaTacheDao getInstance() {
         if (instance == null) {
             instance = new JpaTacheDao();
         }
