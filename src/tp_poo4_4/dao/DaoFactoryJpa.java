@@ -9,7 +9,7 @@ package tp_poo4_4.dao;
  *
  * @author Nicolas
  */
-public class DaoFactoryJpa {
+public class DaoFactoryJpa extends DaoFactory {
     public static JpaAtelierDao getAtelierDao() {
         return JpaAtelierDao.getInstance();
     }
