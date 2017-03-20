@@ -15,7 +15,17 @@ import tp_poo4_4.metier.Tache;
  */
 public class JpaTacheDao extends JpaDao<Tache> implements TacheDao {
 
-    public JpaTacheDao() {
+    private static JpaTacheDao instance = null;
+    
+    public static JpaTacheDao getInstance() {
+        if (instance == null) {
+            instance = new JpaTacheDao();
+        }
+        
+        return instance;
+    }
+    
+    private JpaTacheDao() {
         super(Tache.class);
     }
 

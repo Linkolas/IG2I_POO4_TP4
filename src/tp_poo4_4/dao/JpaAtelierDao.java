@@ -14,7 +14,17 @@ import tp_poo4_4.metier.Atelier;
  */
 public class JpaAtelierDao extends JpaDao<Atelier> implements AtelierDao {
 
-    public JpaAtelierDao() {
+    private static JpaAtelierDao instance = null;
+    
+    public static JpaAtelierDao getInstance() {
+        if (instance == null) {
+            instance = new JpaAtelierDao();
+        }
+        
+        return instance;
+    }
+    
+    private JpaAtelierDao() {
         super(Atelier.class);
     }
 

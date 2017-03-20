@@ -13,7 +13,17 @@ import tp_poo4_4.metier.Machine;
  */
 public class JpaMachineDao extends JpaDao<Machine> implements MachineDao {
     
-    public JpaMachineDao() {
+    private static JpaMachineDao instance = null;
+    
+    public static JpaMachineDao getInstance() {
+        if (instance == null) {
+            instance = new JpaMachineDao();
+        }
+        
+        return instance;
+    }
+    
+    private JpaMachineDao() {
         super(Machine.class);
     }
     

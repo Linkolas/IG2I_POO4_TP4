@@ -5,7 +5,6 @@
  */
 package tp_poo4_tp4.tests;
 
-import java.time.Instant;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -171,9 +170,9 @@ public class Tests {
         Tache t3 = new Tache(70, new Date(timeMillis+60000*180), 4.0);
         Tache t4 = new Tache(60, new Date(timeMillis+60000*300), 12.0);
         
-        AtelierDao atelierManager = new JpaAtelierDao();
-        MachineDao machineManager = new JpaMachineDao();
-        TacheDao tacheManager = new JpaTacheDao();
+        AtelierDao atelierManager = JpaAtelierDao.getInstance();
+        MachineDao machineManager = JpaMachineDao.getInstance();
+        TacheDao tacheManager = JpaTacheDao.getInstance();
         
         tacheManager.deleteAll();
         machineManager.deleteAll();
@@ -211,9 +210,9 @@ public class Tests {
         // --- QUESTION 14
         // Dans mon cas cela provoque une erreur...
         
-        /*TacheDao tacheManager2 = new JpaTacheDao();
+        TacheDao tacheManager2 = JpaTacheDao.getInstance();
         tacheManager2.create(t1);
         tacheManager.create(t1);
-        System.out.println(tacheManager.findAll().size());*/
+        System.out.println(tacheManager.findAll().size());
     }
 }
