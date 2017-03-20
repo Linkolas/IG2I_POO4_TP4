@@ -17,6 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import tp_poo4_4.dao.AtelierDao;
+import tp_poo4_4.dao.DaoFactory;
 import tp_poo4_4.dao.DaoFactoryJpa;
 import tp_poo4_4.dao.JpaAtelierDao;
 import tp_poo4_4.dao.JpaMachineDao;
@@ -171,9 +172,18 @@ public class Tests {
         Tache t3 = new Tache(70, new Date(timeMillis+60000*180), 4.0);
         Tache t4 = new Tache(60, new Date(timeMillis+60000*300), 12.0);
         
-        AtelierDao atelierManager = DaoFactoryJpa.getAtelierDao();
-        MachineDao machineManager = DaoFactoryJpa.getMachineDao();
-        TacheDao tacheManager = DaoFactoryJpa.getTacheDao();
+        AtelierDao atelierManager = 
+                DaoFactory
+                    .getDaoFactory(DaoFactory.PersistenceType.JPA)
+                    .getAtelierDao();
+        MachineDao machineManager = 
+                DaoFactory
+                    .getDaoFactory(DaoFactory.PersistenceType.JPA)
+                    .getMachineDao();
+        TacheDao tacheManager = 
+                DaoFactory
+                    .getDaoFactory(DaoFactory.PersistenceType.JPA)
+                    .getTacheDao();
         
         tacheManager.deleteAll();
         machineManager.deleteAll();
@@ -211,7 +221,11 @@ public class Tests {
         // --- QUESTION 14
         // Dans mon cas cela provoque une erreur...
         
-        TacheDao tacheManager2 = DaoFactoryJpa.getTacheDao();
+        TacheDao tacheManager2 = 
+                DaoFactory
+                    .getDaoFactory(DaoFactory.PersistenceType.JPA)
+                    .getTacheDao();
+        
         tacheManager2.create(t1);
         tacheManager.create(t1);
         System.out.println(tacheManager.findAll().size());

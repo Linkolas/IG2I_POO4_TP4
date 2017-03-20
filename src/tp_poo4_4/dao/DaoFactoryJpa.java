@@ -10,15 +10,18 @@ package tp_poo4_4.dao;
  * @author Nicolas
  */
 public class DaoFactoryJpa extends DaoFactory {
-    public static JpaAtelierDao getAtelierDao() {
+    @Override
+    public JpaAtelierDao getAtelierDao() {
         return JpaAtelierDao.getInstance();
     }
     
-    public static JpaMachineDao getMachineDao() {
+    @Override
+    public JpaMachineDao getMachineDao() {
         return JpaMachineDao.getInstance();
     }
     
-    public static JpaTacheDao getTacheDao() {
+    @Override
+    public JpaTacheDao getTacheDao() {
         return JpaTacheDao.getInstance();
     }
 }
