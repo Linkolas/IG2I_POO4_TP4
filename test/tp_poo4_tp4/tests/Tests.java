@@ -195,6 +195,7 @@ public class Tests {
         
         m1.addTache(t1);
         m1.addTache(t2);
+        
         m2.addTache(t3);
         m2.addTache(t4);
         
@@ -202,5 +203,17 @@ public class Tests {
         tacheManager.update(t2);
         tacheManager.update(t3);
         tacheManager.update(t4);
+        
+        // On constate que les tâches sont à jour mais les temps des machines non.
+        // Il faut penser à mettre à jour les machines après ça.
+        
+        
+        // --- QUESTION 14
+        // Dans mon cas cela provoque une erreur...
+        
+        /*TacheDao tacheManager2 = new JpaTacheDao();
+        tacheManager2.create(t1);
+        tacheManager.create(t1);
+        System.out.println(tacheManager.findAll().size());*/
     }
 }

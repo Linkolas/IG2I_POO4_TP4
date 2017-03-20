@@ -6,7 +6,6 @@
 package tp_poo4_4.dao;
 
 import java.util.Collection;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -82,7 +81,9 @@ public abstract class JpaDao<T> implements Dao<T> {
         boolean retour = true;
         
         try {
+            et.begin();
             em.remove(obj);
+            et.commit();
             
         } catch (Exception ex) {
             retour = false;
@@ -96,8 +97,11 @@ public abstract class JpaDao<T> implements Dao<T> {
         boolean retour = true;
         
         try {
+            et.begin();
             Query createQuery = em.createQuery("delete from " + classe.getSimpleName());
             createQuery.executeUpdate();
+            et.commit();
+            
         } catch (Exception ex) {
             retour = false;
         }

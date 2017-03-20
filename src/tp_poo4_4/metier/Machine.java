@@ -141,10 +141,11 @@ public class Machine implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 47 * hash + Objects.hashCode(this.id);
-        hash = 47 * hash + Objects.hashCode(this.datedispo);
-        hash = 47 * hash + (int) (Double.doubleToLongBits(this.penalitetotale) ^ (Double.doubleToLongBits(this.penalitetotale) >>> 32));
+        int hash = 7;
+        hash = 73 * hash + Objects.hashCode(this.id);
+        hash = 73 * hash + Objects.hashCode(this.datedispo);
+        hash = 73 * hash + (int) (Double.doubleToLongBits(this.penalitetotale) ^ (Double.doubleToLongBits(this.penalitetotale) >>> 32));
+        hash = 73 * hash + Objects.hashCode(this.natelier);
         return hash;
     }
 
@@ -169,9 +170,14 @@ public class Machine implements Serializable {
         if (!Objects.equals(this.datedispo, other.datedispo)) {
             return false;
         }
+        if (!Objects.equals(this.natelier, other.natelier)) {
+            return false;
+        }
         return true;
     }
 
+    
+    
     @Override
     public String toString() {
         return "tp_poo4_4.metier.Machine[ id=" + id + " ]";
