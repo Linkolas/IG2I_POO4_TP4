@@ -14,7 +14,7 @@ import tp_poo4_4.dao.DaoFactory;
  */
 public class Ordonnanceur {
     
-    public static void ordonnancer() {
+    public static boolean ordonnancer() {
         
         Collection<Tache> taches =
                 DaoFactory
@@ -22,13 +22,50 @@ public class Ordonnanceur {
                     .getTacheDao()
                     .findAllNotScheduled();
         
+        if(taches.isEmpty()) {
+            return true;
+        }
+        
+        Collection<Atelier> ateliers = 
+                DaoFactory
+                    .getDaoFactory(DaoFactory.PersistenceType.JPA)
+                    .getAtelierDao()
+                    .findAll();
+        
+        if(ateliers.isEmpty()) {
+            return false;
+        }
+        
         // choisir un atelier dont la dispo est minimale
         // ordonnancer les tâches :
         //      temps max minimal
         //      pénalités max
         
+        Atelier atelierFirst = null;
+        for(Atelier a: ateliers) {
+            if(a.getMachineCollection().isEmpty()) {
+                continue;
+            }
+            
+            if(atelierFirst == null) {
+                atelierFirst = a;
+                continue;
+            }
+            
+            if(atelierFirst.getDatedispo().after(a.getDatedispo())) {
+                atelierFirst = a;
+            }
+        }
+        
+        if(atelierFirst == null) {
+            return false;
+        }
+        
+        int nbMachines = atelierFirst.getMachineCollection().size();
         
         
+        
+        return true;
     }
     
 }
