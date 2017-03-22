@@ -11,11 +11,11 @@ package tp_poo4_4.dao;
  */
 public abstract class DaoFactory {
     
-    public abstract JpaAtelierDao getAtelierDao();
+    public abstract AtelierDao getAtelierDao();
     
-    public abstract JpaMachineDao getMachineDao();
+    public abstract MachineDao getMachineDao();
     
-    public abstract JpaTacheDao getTacheDao();
+    public abstract TacheDao getTacheDao();
     
     public enum PersistenceType {
         JPA;

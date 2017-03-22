@@ -56,7 +56,7 @@ public class Tache implements Serializable {
     @Basic(optional = false)
     @Column(name = "DATELIMITE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date datelimite = Date.from(Instant.now());;
+    private Date datelimite = Date.from(Instant.now());
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "PENALITERETARD")
     private Double penaliteretard = 0.0;

@@ -11,17 +11,17 @@ package tp_poo4_4.dao;
  */
 public class DaoFactoryJpa extends DaoFactory {
     @Override
-    public JpaAtelierDao getAtelierDao() {
+    public AtelierDao getAtelierDao() {
         return JpaAtelierDao.getInstance();
     }
     
     @Override
-    public JpaMachineDao getMachineDao() {
+    public MachineDao getMachineDao() {
         return JpaMachineDao.getInstance();
     }
     
     @Override
-    public JpaTacheDao getTacheDao() {
+    public TacheDao getTacheDao() {
         return JpaTacheDao.getInstance();
     }
 }

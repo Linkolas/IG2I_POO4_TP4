@@ -87,8 +87,7 @@ public class Ordonnanceur {
                 double d = o2.getPenaliteretard() - o1.getPenaliteretard();
                 if(d < 0) {
                     return -1;
-                } else 
-                if (d > 0) {
+                } else if (d > 0) {
                     return 1;
                 }
                 
@@ -106,7 +105,7 @@ public class Ordonnanceur {
         }
         
         // Grâce à ce tri, on peut assigner les tâches aux machines
-        // en assignant la tâche suivannte à la machine pour
+        // en assignant la tâche suivante à la machine pour
         // laquelle la date de dispo est la plus faible et obtenir
         // un temps de mobilisation de l'atelier le plus court.
         // Le tri réalisé permet de prioriser les tâches à forte
