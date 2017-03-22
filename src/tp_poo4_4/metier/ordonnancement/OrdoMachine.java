@@ -7,6 +7,7 @@ package tp_poo4_4.metier.ordonnancement;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.List;
  * @author Nicolas
  */
 public class OrdoMachine {
-    private List<OrdoTache> taches = new ArrayList<>();
+    public List<OrdoTache> taches = new ArrayList<>();
     private Date dateDispoInitiale = Date.from(Instant.now());
     
     public OrdoMachine(Date dateDispoInitiale) {
@@ -34,6 +35,17 @@ public class OrdoMachine {
         return retour;
     }
     
+    public Date getDateDispo() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateDispoInitiale);
+        
+        for(OrdoTache t: taches) {
+            cal.add(Calendar.MINUTE, t.getTemps());
+        }
+        
+        return cal.getTime();
+    }
+    
     public void trierTaches() {
         ArrayList<OrdoTache> tachesRestantes = new ArrayList<>(taches);
         ArrayList<OrdoTache> tachesEnRetard = new ArrayList<>();
@@ -47,13 +59,42 @@ public class OrdoMachine {
                     retour = - Double.compare(o1.getPenalite(), o2.getPenalite());
                 }
                 
+                if(retour == 0) {
+                    retour = Integer.compare(o1.getTemps(), o2.getTemps());
+                }
+                
                 return retour;
             }
         });
         
+        taches = new ArrayList<>();
+        
         while(tachesRestantes.size() > 0) {
-            // retirer les taches dépassées
+            OrdoTache tache = tachesRestantes.get(0);
+            tachesRestantes.remove(tache);
             
+            // retirer les taches dépassées
+            Date dateMax = DateAdd(getDateDispo(), tache.getTemps());
+            if(tache.getDateLimite().before(dateMax)) {
+                // La date limite sera dépassée.
+                // On aura de toute manière la pénalité, 
+                // autant prioriser les autres tâches !
+                tachesEnRetard.add(tache);
+                continue;
+            }
+            
+            taches.add(tache);
         }
+        
+        taches.addAll(tachesRestantes);
+    }
+    
+    public static Date DateAdd(Date date, int minutes) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        
+        cal.add(Calendar.MINUTE, minutes);
+        
+        return cal.getTime();
     }
 }

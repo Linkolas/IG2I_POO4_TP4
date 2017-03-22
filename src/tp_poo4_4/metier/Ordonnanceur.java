@@ -5,12 +5,15 @@
  */
 package tp_poo4_4.metier;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import tp_poo4_4.dao.DaoFactory;
+import tp_poo4_4.metier.ordonnancement.OrdoAtelier;
 
 /**
  *
@@ -65,8 +68,6 @@ public class Ordonnanceur {
             return false;
         }
         
-        int nbMachines = atelierFirst.getMachineCollection().size();
-        
         List<Tache> listeTaches = new ArrayList<>(taches);
         Collections.sort(listeTaches, new Comparator<Tache>() {
             @Override
@@ -111,6 +112,18 @@ public class Ordonnanceur {
         // Le tri réalisé permet de prioriser les tâches à forte
         // pénalité quand plusieurs tâches ont la même durée.
         
+        int count = 0;
+        List<Machine> machines = new ArrayList<>(atelierFirst.getMachineCollection());
+        for(Tache t: listeTaches) {
+            
+            if(count >= machines.size()) {
+                count = 0;
+            }
+            
+            machines.get(count).addTache(t);
+            
+            count++;
+        }
         
         
         // Améliorations à apporter : 
@@ -119,6 +132,10 @@ public class Ordonnanceur {
         // 2 - Interchanger les tâches assingnées entre les amchines
         //  si cela permet d'éviter une pénalité sans augmenter le
         //  temps d'indisponibilité de l'atelier.
+        
+        
+        OrdoAtelier oa = new OrdoAtelier(3, Date.from(Instant.now()));
+        oa.JeuDeTest();
         
         return true;
     }
