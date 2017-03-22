@@ -5,7 +5,11 @@
  */
 package tp_poo4_4.metier;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import tp_poo4_4.dao.DaoFactory;
 
 /**
@@ -63,7 +67,59 @@ public class Ordonnanceur {
         
         int nbMachines = atelierFirst.getMachineCollection().size();
         
+        List<Tache> listeTaches = new ArrayList<>(taches);
+        Collections.sort(listeTaches, new Comparator<Tache>() {
+            @Override
+            public int compare(Tache o1, Tache o2) {
+                
+                int retour = o2.getTempsprod() - o1.getTempsprod();
+                
+                if(retour != 0) {
+                    return retour;
+                }
+                
+                retour = o1.getDatelimite().compareTo(o2.getDatelimite());
+                
+                if(retour != 0) {
+                    return retour;
+                }
+                
+                double d = o2.getPenaliteretard() - o1.getPenaliteretard();
+                if(d < 0) {
+                    return -1;
+                } else 
+                if (d > 0) {
+                    return 1;
+                }
+                
+                return retour;
+            }
+        });
         
+        for(Tache t: listeTaches) {
+            System.out.println("Duree " + t.getTempsprod() + " + Limite " + t.getDatelimite() + " + Penalite " + t.getPenaliteretard());
+            
+            // On constate qu'on ordonnance ainsi :
+            //  - Durée de la plus grande à petite
+            //  - Date limite de la plus petite à plus grande
+            //  - Pénalité de la plus élevée à plus faible
+        }
+        
+        // Grâce à ce tri, on peut assigner les tâches aux machines
+        // en assignant la tâche suivannte à la machine pour
+        // laquelle la date de dispo est la plus faible et obtenir
+        // un temps de mobilisation de l'atelier le plus court.
+        // Le tri réalisé permet de prioriser les tâches à forte
+        // pénalité quand plusieurs tâches ont la même durée.
+        
+        
+        
+        // Améliorations à apporter : 
+        // 1 - Trier les tâches assignées à une machine pour réaliser
+        //  en priorité les tâches qui pourraient finir trop tard.
+        // 2 - Interchanger les tâches assingnées entre les amchines
+        //  si cela permet d'éviter une pénalité sans augmenter le
+        //  temps d'indisponibilité de l'atelier.
         
         return true;
     }
