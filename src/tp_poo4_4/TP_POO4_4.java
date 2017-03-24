@@ -29,7 +29,7 @@ public class TP_POO4_4 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        AtelierDao atelierManager = 
+        /*AtelierDao atelierManager = 
                 DaoFactory
                     .getDaoFactory(DaoFactory.PersistenceType.JPA)
                     .getAtelierDao();
@@ -69,7 +69,8 @@ public class TP_POO4_4 {
         tacheManager.create(t4);
         tacheManager.create(t5);
         
-        Ordonnanceur.ordonnancer();
+        Ordonnanceur.ordonnancer();*/
+        Ordonnanceur.JeuDeTest();
     }
     
 }

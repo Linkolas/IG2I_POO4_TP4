@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import tp_poo4_4.metier.Ordonnanceur;
 
 /**
  *
@@ -53,14 +54,14 @@ public class OrdoMachine {
         Collections.sort(tachesRestantes, new Comparator<OrdoTache>() {
             @Override
             public int compare(OrdoTache o1, OrdoTache o2) {
-                int retour = o1.getDateLimite().compareTo(o2.getDateLimite());
+                int retour = 0;
+                
+                retour =        Ordonnanceur.DateAdd(o1.getDateLimite(), new Double(-o1.getPenalite()).intValue())
+                    .compareTo( Ordonnanceur.DateAdd(o2.getDateLimite(), new Double(-o1.getPenalite()).intValue())
+                    );
                 
                 if(retour == 0) {
-                    retour = - Double.compare(o1.getPenalite(), o2.getPenalite());
-                }
-                
-                if(retour == 0) {
-                    retour = Integer.compare(o1.getTemps(), o2.getTemps());
+                    retour = Double.compare(o2.getPenalite(), o1.getPenalite());
                 }
                 
                 return retour;
@@ -74,7 +75,7 @@ public class OrdoMachine {
             tachesRestantes.remove(tache);
             
             // retirer les taches dépassées
-            Date dateMax = DateAdd(getDateDispo(), tache.getTemps());
+            Date dateMax = Ordonnanceur.DateAdd(getDateDispo(), tache.getTemps());
             if(tache.getDateLimite().before(dateMax)) {
                 // La date limite sera dépassée.
                 // On aura de toute manière la pénalité, 
@@ -86,15 +87,6 @@ public class OrdoMachine {
             taches.add(tache);
         }
         
-        taches.addAll(tachesRestantes);
-    }
-    
-    public static Date DateAdd(Date date, int minutes) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        
-        cal.add(Calendar.MINUTE, minutes);
-        
-        return cal.getTime();
+        taches.addAll(tachesEnRetard);
     }
 }

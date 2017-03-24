@@ -7,6 +7,7 @@ package tp_poo4_4.metier;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -134,10 +135,21 @@ public class Ordonnanceur {
         //  temps d'indisponibilité de l'atelier.
         
         
-        OrdoAtelier oa = new OrdoAtelier(3, Date.from(Instant.now()));
-        oa.JeuDeTest();
         
         return true;
     }
     
+    public static void JeuDeTest() {
+        OrdoAtelier oa = new OrdoAtelier();
+        oa.JeuDeTest();
+    }
+    
+    public static Date DateAdd(Date date, int minutes) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        
+        cal.add(Calendar.MINUTE, minutes);
+        
+        return cal.getTime();
+    }
 }
