@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import tp_poo4_4.metier.Ordonnanceur;
 
 /**
@@ -47,6 +48,24 @@ public class OrdoMachine {
         return cal.getTime();
     }
     
+    public double getPenalites() {
+        double penalite = 0;
+        long retard = 0;
+        Date finTache = new Date(dateDispoInitiale.getTime());
+        
+        for(OrdoTache t: taches) {
+            finTache = Ordonnanceur.DateAdd(finTache, t.getTemps());
+            retard = TimeUnit.MILLISECONDS.toMinutes(
+                    finTache.getTime() - t.getDateLimite().getTime());
+            
+            if(retard > 0) {
+                penalite += retard * t.getPenalite();
+            }
+        }
+        
+        return penalite;
+    }
+    
     public void trierTaches() {
         ArrayList<OrdoTache> tachesRestantes = new ArrayList<>(taches);
         ArrayList<OrdoTache> tachesEnRetard = new ArrayList<>();
@@ -56,8 +75,8 @@ public class OrdoMachine {
             public int compare(OrdoTache o1, OrdoTache o2) {
                 int retour = 0;
                 
-                retour =        Ordonnanceur.DateAdd(o1.getDateLimite(), new Double(-o1.getPenalite()).intValue())
-                    .compareTo( Ordonnanceur.DateAdd(o2.getDateLimite(), new Double(-o1.getPenalite()).intValue())
+                retour =        Ordonnanceur.DateAdd(o1.getDateLimite(), -o1.getTemps())
+                    .compareTo( Ordonnanceur.DateAdd(o2.getDateLimite(), -o2.getTemps())
                     );
                 
                 if(retour == 0) {
@@ -88,5 +107,18 @@ public class OrdoMachine {
         }
         
         taches.addAll(tachesEnRetard);
+    }
+    
+    public void trierTaches2() {
+        List<OrdoTache> taches = new ArrayList<>(this.taches);
+        this.taches.clear();
+        
+        for(OrdoTache t: taches) {
+            t.retardPrevu = 0;
+        }
+        
+        while(taches.size() > 0) {
+            
+        }
     }
 }

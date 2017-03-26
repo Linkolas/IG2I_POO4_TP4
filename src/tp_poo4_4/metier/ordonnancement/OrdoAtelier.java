@@ -44,11 +44,12 @@ public class OrdoAtelier {
     }
     
     public void setMachines(int number) {
+        machines.clear();
         while(number > machines.size()) {
-            delMachine();
+            addMachine();
         }
         while(number < machines.size()) {
-            addMachine();
+            delMachine();
         }
     }
     
@@ -84,9 +85,32 @@ public class OrdoAtelier {
         return retour;
     }
     
+    private void trierTaches() {
+        Collections.sort(taches, new Comparator<OrdoTache>() {
+            @Override
+            public int compare(OrdoTache o1, OrdoTache o2) {
+                int retour = 0;
+                
+                retour =        Ordonnanceur.DateAdd(o1.getDateLimite(), -o1.getTemps())
+                    .compareTo( Ordonnanceur.DateAdd(o2.getDateLimite(), -o2.getTemps())
+                    );
+                
+                if(retour == 0) {
+                    retour = Double.compare(o2.getPenalite(), o1.getPenalite());
+                }
+                
+                return retour;
+            }
+        });
+    }
+    
     public void JeuDeTest() {
         System.out.println("Lancement du jeu de tests.");
-        Test1();
+        System.out.println("");
+        System.out.println("");
+        //Test1();
+        System.out.println("");
+        System.out.println("");
         Test2();
     }
     
@@ -95,6 +119,8 @@ public class OrdoAtelier {
         
         setMachines(2);
         System.out.println("Atelier à " + machines.size() + " machines.");
+        
+        System.out.println("Dispo : " + dateDispoInitiale);
         
         taches.add(
             new OrdoTache(1, 1, Ordonnanceur.DateAdd(dateDispoInitiale, -5), 1));
@@ -111,22 +137,7 @@ public class OrdoAtelier {
         
         System.out.println("Il y a " + taches.size() + " tâches.");
         
-        Collections.sort(taches, new Comparator<OrdoTache>() {
-            @Override
-            public int compare(OrdoTache o1, OrdoTache o2) {
-                int retour = 0;
-                
-                retour =        Ordonnanceur.DateAdd(o1.getDateLimite(), new Double(-o1.getPenalite()).intValue())
-                    .compareTo( Ordonnanceur.DateAdd(o2.getDateLimite(), new Double(-o1.getPenalite()).intValue())
-                    );
-                
-                if(retour == 0) {
-                    retour = Double.compare(o2.getPenalite(), o1.getPenalite());
-                }
-                
-                return retour;
-            }
-        });
+        trierTaches();
         
         System.out.println("");
         System.out.println("Tri des tâches pour attribution machine : T1 T3 T2 T4 T5 T6");
@@ -150,10 +161,10 @@ public class OrdoAtelier {
         
         
         System.out.println("");
-        System.out.println("Tri des tâches par machine : 1 = T2 T5 T6 T1 / 2 = T3 T4");
+        System.out.println("Tri des tâches par machine :");
         for(OrdoMachine m: machines) {
             m.trierTaches();
-            System.out.println("Machine TExec " + m.getTempsTotal());
+            System.out.println("Machine Penalités " + m.getPenalites());
             
             for(OrdoTache t: m.taches) {
                 System.out.println("T" + t.getId() + " - lim " + t.getDateLimite() + " - temps " + t.getTemps() + " - pén " + t.getPenalite());
@@ -163,13 +174,48 @@ public class OrdoAtelier {
     }
     
     private void Test2() {
+        taches.clear();
+        System.out.println("-- -- -- Test 2 -- -- --");
         
+        setMachines(1);
+        System.out.println("Atelier à " + machines.size() + " machines.");
+        
+        System.out.println("Dispo : " + dateDispoInitiale);
+        
+        taches.add(
+            new OrdoTache(1, 1, Ordonnanceur.DateAdd(dateDispoInitiale, -5), 1));
+        taches.add(
+            new OrdoTache(2, 1, Ordonnanceur.DateAdd(dateDispoInitiale, -5), 3));
+        taches.add(
+            new OrdoTache(3, 2, Ordonnanceur.DateAdd(dateDispoInitiale, -4), 2));
+        taches.add(
+            new OrdoTache(4, 3, Ordonnanceur.DateAdd(dateDispoInitiale,  5), 5));
+        
+        System.out.println("Il y a " + taches.size() + " tâches.");
+        
+        trierTaches();
+        
+        System.out.println("");
+        System.out.println("Tri des tâches pour attribution machine : T2 T3 T1 T4");
+        for(OrdoTache t: taches) {
+            System.out.println("T" + t.getId() + " - lim " + t.getDateLimite() + " - temps " + t.getTemps() + " - pén " + t.getPenalite());
+        }
+        
+        for(OrdoTache t: taches) {
+            getMachineDispoFirst().taches.add(t);
+        }
+        
+        System.out.println("");
+        System.out.println("Tri des tâches par machine :");
+        for(OrdoMachine m: machines) {
+            System.out.println("Machine TExec " + m.getTempsTotal());
+            System.out.println("Machine Pénalités AV " + m.getPenalites());
+            m.trierTaches2();
+            System.out.println("Machine Pénalités AP " + m.getPenalites());
+            
+            for(OrdoTache t: m.taches) {
+                System.out.println("T" + t.getId() + " - lim " + t.getDateLimite() + " - temps " + t.getTemps() + " - pén " + t.getPenalite());
+            }
+        }
     }
 }
-
-/*
-
-Collections.sort(ltd, (Tache o1, Tache o2) -> (
-new Date(o1.getDatelimite().getTime() - (o1.getTempsprod()*60*1000))).compareTo(new Date(o2.getDatelimite().getTime() - (o2.getTempsprod()*60*1000))));
-
-*/

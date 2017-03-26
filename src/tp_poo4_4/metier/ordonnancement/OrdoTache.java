@@ -17,6 +17,7 @@ public class OrdoTache {
     private int temps = 0;
     private double penalite = 0.0;
     private Date dateLimite = Date.from(Instant.now());
+    public int retardPrevu = 0;
 
     public OrdoTache(int id, int temps, Date dateLimite, double penalite) {
         this.id = id;
