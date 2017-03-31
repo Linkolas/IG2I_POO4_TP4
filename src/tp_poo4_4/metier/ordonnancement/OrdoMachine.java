@@ -110,15 +110,67 @@ public class OrdoMachine {
     }
     
     public void trierTaches2() {
+        Collections.sort(this.taches, new Comparator<OrdoTache>() {
+            @Override
+            public int compare(OrdoTache o1, OrdoTache o2) {
+                int retour = 0;
+                
+                if(retour == 0) {
+                    retour =        Ordonnanceur.DateAdd(o1.getDateLimite(), -o1.getTemps())
+                        .compareTo( Ordonnanceur.DateAdd(o2.getDateLimite(), -o2.getTemps())
+                        );
+                }
+                
+                if(retour == 0) {
+                    retour = Double.compare(o2.getPenalite(), o1.getPenalite());
+                }
+                
+                return retour;
+            }
+        });
+        
         List<OrdoTache> taches = new ArrayList<>(this.taches);
-        this.taches.clear();
         
-        for(OrdoTache t: taches) {
-            t.retardPrevu = 0;
-        }
-        
-        while(taches.size() > 0) {
+        int nb_pass = 0;
+        while(nb_pass < taches.size()) {
             
+            int position_initiale = nb_pass;
+            double best_penalite = Double.MAX_VALUE;
+            
+            List<Integer> best_positions = new ArrayList<>();
+            best_positions.add(position_initiale);
+            
+            OrdoTache tache = taches.get(position_initiale);
+            taches.remove(tache);
+            
+            int current_test = 0;
+            while(current_test <= taches.size()) {
+                
+                OrdoMachine current_machine = new OrdoMachine(dateDispoInitiale);
+                current_machine.taches = new ArrayList<>(taches);
+                current_machine.taches.add(current_test, tache);
+                
+                if(best_penalite >= current_machine.getPenalites()) {
+                    
+                    if(best_penalite != current_machine.getPenalites()) {
+                        best_positions.clear();
+                        best_penalite = current_machine.getPenalites();
+                    }
+                    
+                    best_positions.add(current_test);
+                }
+                
+                current_test++;
+            }
+            
+            if(best_positions.contains(position_initiale)) {
+                nb_pass++;
+                taches.add(position_initiale, tache);
+            } else {
+                nb_pass = 0;
+                taches.add(best_positions.get(0), tache);
+            }
         }
+        this.taches = taches;
     }
 }

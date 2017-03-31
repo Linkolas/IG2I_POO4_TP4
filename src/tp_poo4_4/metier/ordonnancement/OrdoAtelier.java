@@ -91,9 +91,15 @@ public class OrdoAtelier {
             public int compare(OrdoTache o1, OrdoTache o2) {
                 int retour = 0;
                 
-                retour =        Ordonnanceur.DateAdd(o1.getDateLimite(), -o1.getTemps())
-                    .compareTo( Ordonnanceur.DateAdd(o2.getDateLimite(), -o2.getTemps())
-                    );
+                if(retour == 0) {
+                    retour = Integer.compare(o2.getTemps(), o1.getTemps());
+                }
+                
+                if(retour == 0) {
+                    retour =        Ordonnanceur.DateAdd(o1.getDateLimite(), -o1.getTemps())
+                        .compareTo( Ordonnanceur.DateAdd(o2.getDateLimite(), -o2.getTemps())
+                        );
+                }
                 
                 if(retour == 0) {
                     retour = Double.compare(o2.getPenalite(), o1.getPenalite());
@@ -108,7 +114,7 @@ public class OrdoAtelier {
         System.out.println("Lancement du jeu de tests.");
         System.out.println("");
         System.out.println("");
-        //Test1();
+        Test1();
         System.out.println("");
         System.out.println("");
         Test2();
